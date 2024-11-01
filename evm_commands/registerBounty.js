@@ -13,6 +13,14 @@ export async function registerBounty(token, needs, name, metadata) {
 
         const profileId = await fetchPastEvents(managerContract);
 
+        console.log(":::::::: Bounty ID")
+        console.log(profileId)
+
+        const bountyInfo = await managerContract.getBountyInfo(profileId);
+
+        console.log(":::::::: Bounty Info")
+        console.log(bountyInfo)
+
         return profileId;
     } catch (error) {
         console.error("Transaction failed:", error);
@@ -21,26 +29,28 @@ export async function registerBounty(token, needs, name, metadata) {
 }
 
 async function fetchPastEvents(contract) {
-
     const fromBlock = 0;
     const toBlock = "latest";
-    const targetNonce = 1; // Replace with actual nonce you’re looking for
 
+    // Fetch all ProjectRegistered events
     const events = await contract.queryFilter(contract.filters.ProjectRegistered(), fromBlock, toBlock);
-    
-    let profileId = null;
-    for (const event of events) {
 
-        const eventNonce = Number(event.args[1]); // Extract nonce from event args
-        console.log(`Event caught: Project ID: ${event.args[0]}, Pool ID (Nonce): ${eventNonce}`);
-
-        if (eventNonce === targetNonce) {
-            profileId = event.args[0]; // Store profileId if nonce matches
-            break; // Exit the loop once the desired event is found
-        }
+    // Check if there are any events
+    if (events.length === 0) {
+        console.log("No ProjectRegistered events found.");
+        return null;
     }
 
-    return profileId; // Return the matching profileId or null if not found
+    // Sort events by block number to get the latest one
+    events.sort((a, b) => b.blockNumber - a.blockNumber);
+    
+    // Get the latest event's profile ID
+    const latestEvent = events[0];
+    const profileId = latestEvent.args[0]; // The first argument should be the project ID (profileId)
+    
+    console.log(`Latest Event caught: Project ID: ${profileId}, Pool ID (Nonce): ${latestEvent.args[1]}`);
+    return profileId;
 }
+
 
 // registerBounty("0xa0Ee7A142d267C1f36714E4a8F75612F20a79720", 50, "Test Name", "Test Metadata")

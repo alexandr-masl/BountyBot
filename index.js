@@ -1,4 +1,5 @@
 import { manageComment } from './helpers/commentManager.js';
+import { mongoose } from 'mongoose';
 
 /**
  * This is the main entrypoint to your Probot app
@@ -19,4 +20,8 @@ export default (app) => {
   app.on("issue_comment.created", async (context) => {
     await manageComment(context);
   });
+
+  mongoose.connect('mongodb://localhost:27017/GitHub-ProBot')
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.error("MongoDB connection error:", err));
 };

@@ -1,5 +1,7 @@
 import { isAdminUser } from '../helpers/adminManager.js';
 import { registerBounty } from '../evm_commands/registerBounty.js';
+import { getBountyId, setBountyId } from '../db/dataBase.js'
+import { ethers } from 'ethers';
 
 export const registerCommand = async (context, payload) => {
     try {
@@ -19,7 +21,16 @@ export const registerCommand = async (context, payload) => {
         // console.log("Issue Title:", issueTitle);
         // console.log("Issue URL:", issueUrl);
 
-        const bountyId = await registerBounty(payload.token, payload.amount, issueTitle, issueUrl);
+        const checkBountyId = await getBountyId(issueUrl);
+
+        if (checkBountyId){
+            const reply = context.issue({body: `🔴 Error: Already Registered`});
+            return context.octokit.issues.createComment(reply);
+        }
+
+        const amount = ethers.parseUnits((payload.amount).toString(), 18);
+
+        const bountyId = await registerBounty(payload.token, amount, issueTitle, issueUrl);
         // console.log(":::::: Bounty ID:", bountyId);
 
         if (bountyId.error){
@@ -28,14 +39,15 @@ export const registerCommand = async (context, payload) => {
         }
         else {
             const reply = context.issue({
-                body: `🟢 <b>Bounty has been registered</b>\n\n<b>ID:</b> ${bountyId}\n<b>TOKEN:</b> ${payload.token}\n<b>AMOUNT:</b> ${payload.amount}`
+                body: `🟢 <b>Bounty has been registered</b>\n\n<b>BOUNTY_ID:</b> ${bountyId}\n<b>TOKEN:</b> ${payload.token}\n<b>AMOUNT:</b> ${payload.amount}`
             });
 
+            await setBountyId(issueUrl, bountyId);
             return context.octokit.issues.createComment(reply);
         }
     }
     catch(err){
-        console.error(`Error: huntCommand - ${err}`)
+        console.error(`Error: registerCommand - ${err}`)
         return {err: err};
     }
 }

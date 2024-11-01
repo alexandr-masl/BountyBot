@@ -10,5 +10,9 @@ export const checkCommand = (content) => {
         const commandData = extractWords(content);
         return {isCommand: true, command: commandData[0], token: commandData[1], amount: commandData[2]};
     }
+    if (content.toString().includes("/fund")){
+        const commandData = extractWords(content);
+        return {isCommand: true, command: commandData[0], wallet: commandData[1]};
+    }
     else return {};
 }
