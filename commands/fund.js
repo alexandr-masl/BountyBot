@@ -1,5 +1,6 @@
 import { getBountyId } from '../db/dataBase.js'
 import { fundBounty } from '../evm_commands/fundBounty.js'
+import { offerMilestones} from '../evm_commands/offerMilestones.js';
 
 export const fundCommand = async (context, payload) => {
     try {
@@ -21,7 +22,7 @@ export const fundCommand = async (context, payload) => {
         }
 
         const fund = await fundBounty(bountyId, payload.wallet);
-
+        const milestones = await offerMilestones(bountyId);
     }
     catch(err){
         console.error(`Error: huntCommand - ${err}`)

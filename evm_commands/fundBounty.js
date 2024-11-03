@@ -54,9 +54,6 @@ export async function fundBounty(bountyId, donorWallet) {
         // Wait for the transaction to be confirmed
         await fundBountyTx.wait();
         console.log("Funding complete");
-
-
-
     } catch (error) {
         console.error("Transaction failed:", error);
         throw new Error("Failed to register bounty.");
