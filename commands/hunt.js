@@ -1,5 +1,7 @@
-import {assignHunter} from "../helpers/hunterManager.js"
-import {isValidAddress} from "../helpers/walletChecker.js"
+import {assignHunter} from "../handlers/hunterManager.js"
+import {isValidAddress} from "../handlers/walletChecker.js"
+import {getBountyId} from '../db/dataBase.js'
+import { addRecipient } from "../evm_commands/addRecipient.js"
 
 export const huntCommand = async (context, payload) => {
     try {
@@ -19,7 +21,18 @@ export const huntCommand = async (context, payload) => {
             return context.octokit.issues.createComment(reply);
         }
 
-        // TODO: add recipient to the Strategy
+        const issueUrl = context.payload.issue.html_url;
+
+        const bountyId = await getBountyId(issueUrl);
+
+        console.log("::::::::: Bounty ID:", bountyId)
+
+        if (!bountyId){
+            const reply = context.issue({body: `🔴 Error: Undefined Bounty ID..`});
+            return context.octokit.issues.createComment(reply);
+        }
+
+        const addRecipientData = await addRecipient(bountyId, payload.wallet);
     }
     catch(err){
         console.log(`Error: huntCommand - ${err}`)

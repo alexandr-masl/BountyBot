@@ -1,4 +1,4 @@
-import { isAdminUser } from '../helpers/adminManager.js';
+import { isAdminUser } from '../handlers/adminManager.js';
 import { registerBounty } from '../evm_commands/registerBounty.js';
 import { getBountyId, setBountyId } from '../db/dataBase.js'
 import { ethers } from 'ethers';

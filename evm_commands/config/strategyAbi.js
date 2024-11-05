@@ -33,6 +33,41 @@ export const STRATEGY_ABI = [
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
-    }
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_recipient",
+                "type": "address"
+            },
+            {
+                "internalType": "enum Status",
+                "name": "_status",
+                "type": "uint8" // Enum types are typically represented as uint8 in the ABI
+            }
+        ],
+        "name": "reviewRecipient",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_milestoneId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_metadata",
+                "type": "string"
+            }
+        ],
+        "name": "submitMilestone",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }    
 ];
-
