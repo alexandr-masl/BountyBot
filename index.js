@@ -1,5 +1,6 @@
 import { manageComment } from './handlers/commentManager.js';
 import { managePullRequest } from './handlers/pullRequestManager.js';
+import { manageUnassigned } from './handlers/unassigned.js';
 import { mongoose } from 'mongoose';
 
 /**
@@ -24,6 +25,10 @@ export default (app) => {
 
   app.on("pull_request.closed", async (context) => {
     await managePullRequest(context);
+  });
+
+  app.on("issues.unassigned", async (context) => {
+    await manageUnassigned(context);
   });
   
 

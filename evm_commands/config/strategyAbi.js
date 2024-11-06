@@ -69,5 +69,38 @@ export const STRATEGY_ABI = [
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getBountyStrategyInfo",
+        "outputs": [
+            {
+                "internalType": "enum StrategyState",
+                "name": "_state",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint32",
+                "name": "_maxRecipientsAmount",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_totalSupply",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_thresholdPercentage",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_hunter",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     }    
 ];
