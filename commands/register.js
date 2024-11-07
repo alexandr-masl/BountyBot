@@ -1,12 +1,10 @@
 import { isAdminUser } from '../handlers/adminManager.js';
-import { registerBounty } from '../evm_commands/registerBounty.js';
+import { registerBounty } from '../evm_commands/register-bounty.js';
 import { getBountyId, setBountyId } from '../db/dataBase.js'
 import { ethers } from 'ethers';
 
 export const registerCommand = async (context, payload) => {
     try {
-        // console.log("------- Executing /register command...");
-        // console.log(payload)
 
         const isAdmin = await isAdminUser(context);
         // console.log("------- isAdmin:", isAdmin);
@@ -18,9 +16,6 @@ export const registerCommand = async (context, payload) => {
 
         const issueTitle = context.payload.issue.title;
         const issueUrl = context.payload.issue.html_url;
-        // console.log("Issue Title:", issueTitle);
-        // console.log("Issue URL:", issueUrl);
-
         const checkBountyId = await getBountyId(issueUrl);
 
         if (checkBountyId){
@@ -29,9 +24,7 @@ export const registerCommand = async (context, payload) => {
         }
 
         const amount = ethers.parseUnits((payload.amount).toString(), 18);
-
         const bountyId = await registerBounty(payload.token, amount, issueTitle, issueUrl);
-        // console.log(":::::: Bounty ID:", bountyId);
 
         if (bountyId.error){
             const reply = context.issue({body: `🔴 Error: ${bountyId.error}`});

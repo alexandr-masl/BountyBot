@@ -1,13 +1,13 @@
 import { ethers } from 'ethers';
 import { MANAGER_ADDRESS, DEV_PROVIDER_PATH, DEV_PRIVATE_KEY } from './config/config.js';
-import { MANAGER_ABI } from './config/managerAbi.js';
-import { STRATEGY_ABI } from './config/strategyAbi.js';
+import { MANAGER_ABI } from './config/manager-abi.js';
+import { STRATEGY_ABI } from './config/strategy-abi.js';
 
 const provider = new ethers.JsonRpcProvider(DEV_PROVIDER_PATH);
 const managerWallet = new ethers.Wallet(DEV_PRIVATE_KEY, provider);
 
 export async function offerMilestones(bountyId) {
-
+  try{   
     const managerContract = new ethers.Contract(MANAGER_ADDRESS, MANAGER_ABI, managerWallet);
     const bountyInfo = await managerContract.getBountyInfo(bountyId);
 
@@ -32,6 +32,11 @@ export async function offerMilestones(bountyId) {
     console.log("---- Offer Milestones Tx Result");
     console.log(setMilestonesTxResult);
 
+    return setMilestonesTxResult;
+  }
+  catch(error){
+    return {error: error};
+  }
 }
 
 // offerMilestones("0x3e4ff1a32318a7201199bb9644b3d4ac15c6a468b436c8456d812687b9b8e532");

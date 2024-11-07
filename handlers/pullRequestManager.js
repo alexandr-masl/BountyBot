@@ -1,13 +1,13 @@
 import { getBountyId } from '../db/dataBase.js'
-import { submitMilestones } from '../evm_commands/submitMilestone.js'
+import { submitMilestones } from '../evm_commands/submit-milestone.js'
 
 
 export const managePullRequest = async (context) => {
     try {
         const pr = context.payload.pull_request;
   
-        console.log(":::::::::::::: PULL REQUEST :::::::::::::::::::::");
-        console.log(pr);
+        // console.log(":::::::::::::: PULL REQUEST :::::::::::::::::::::");
+        // console.log(pr);
       
         if (pr.merged) {
           const bodyText = pr.body || '';

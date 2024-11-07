@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import { MANAGER_ADDRESS, DEV_PROVIDER_PATH, DEV_PRIVATE_KEY } from './config/config.js';
-import { MANAGER_ABI } from './config/managerAbi.js';
-import { STRATEGY_ABI } from './config/strategyAbi.js';
+import { MANAGER_ABI } from './config/manager-abi.js';
+import { STRATEGY_ABI } from './config/strategy-abi.js';
 
 const provider = new ethers.JsonRpcProvider(DEV_PROVIDER_PATH);
 const managerWallet = new ethers.Wallet(DEV_PRIVATE_KEY, provider);
@@ -27,6 +27,8 @@ export async function addRecipient(bountyId, recipientWallet) {
 
       console.log(":::::::: Strategy Info");
       console.log(strategyInfo);
+
+      return strategyInfo;
     }
     catch(error){
       console.log("error !!! submitMilestones")

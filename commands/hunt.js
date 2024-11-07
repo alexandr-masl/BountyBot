@@ -1,7 +1,7 @@
 import {assignHunter} from "../handlers/hunterManager.js"
 import {isValidAddress} from "../handlers/walletChecker.js"
 import {getBountyId} from '../db/dataBase.js'
-import { addRecipient } from "../evm_commands/addRecipient.js"
+import { addRecipient } from "../evm_commands/add-recipient.js"
 
 export const huntCommand = async (context, payload) => {
     try {
@@ -33,6 +33,17 @@ export const huntCommand = async (context, payload) => {
         }
 
         const addRecipientData = await addRecipient(bountyId, payload.wallet);
+
+        if (addRecipientData.error){
+            const reply = context.issue({body: `🔴 addRecipient call error`});
+            return context.octokit.issues.createComment(reply);
+        }
+        else {
+            const reply = context.issue(
+                {body: `🟢 <b>${payload.wallet} hunter has been added</b>`}
+            );
+            await context.octokit.issues.createComment(reply);
+        }
     }
     catch(err){
         console.log(`Error: huntCommand - ${err}`)

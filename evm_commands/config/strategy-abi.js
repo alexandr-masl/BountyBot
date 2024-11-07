@@ -102,5 +102,12 @@ export const STRATEGY_ABI = [
         ],
         "stateMutability": "view",
         "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "rejectStrategy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
     }    
 ];

@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import { MANAGER_ADDRESS, DEV_PROVIDER_PATH, DEV_PRIVATE_KEY } from './config/config.js';
-import { MANAGER_ABI } from './config/managerAbi.js';
-import { STRATEGY_ABI } from './config/strategyAbi.js';
+import { MANAGER_ABI } from './config/manager-abi.js';
+import { STRATEGY_ABI } from './config/strategy-abi.js';
 
 const provider = new ethers.JsonRpcProvider(DEV_PROVIDER_PATH);
 const managerWallet = new ethers.Wallet(DEV_PRIVATE_KEY, provider);
@@ -30,7 +30,6 @@ export async function removeRecipient(bountyId) {
     console.log(removeRecipientTxResult);
 
     const updatedStrategyInfo = await bountyStrategy.getBountyStrategyInfo();
-
     console.log(":::::::: Updated Strategy Info");
     console.log(updatedStrategyInfo);
   }

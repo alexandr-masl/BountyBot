@@ -1,19 +1,11 @@
 import { getBountyId } from '../db/dataBase.js'
-import { fundBounty } from '../evm_commands/fundBounty.js'
-import { offerMilestones} from '../evm_commands/offerMilestones.js';
+import { fundBounty } from '../evm_commands/fund-bounty.js'
+import { offerMilestones} from '../evm_commands/offer-milestones.js';
 
 export const fundCommand = async (context, payload) => {
     try {
-        console.log("------- Executing /fund command...");
-        console.log(payload)
-
-        const issueTitle = context.payload.issue.title;
         const issueUrl = context.payload.issue.html_url;
-        console.log("Issue Title:", issueTitle);
-        console.log("Issue URL:", issueUrl);
-
         const bountyId = await getBountyId(issueUrl);
-
         console.log("::::::::: Bounty ID:", bountyId)
 
         if (!bountyId){
@@ -22,7 +14,31 @@ export const fundCommand = async (context, payload) => {
         }
 
         const fund = await fundBounty(bountyId, payload.wallet);
+
+        if (fund.error){
+            const reply = context.issue({body: `🔴 fundBounty call error`});
+            return context.octokit.issues.createComment(reply);
+        }
+        else {
+            const strategyAddress = fund[7];
+            const reply = context.issue(
+                {body: `🟢 <b>Bounty has been funded</b>\n\n<b>Bounty Strategy:</b> ${strategyAddress}`}
+            );
+            await context.octokit.issues.createComment(reply);
+        }
+
         const milestones = await offerMilestones(bountyId);
+
+        if (milestones.error){
+            const reply = context.issue({body: `🔴 offerMilestones call error`});
+            return context.octokit.issues.createComment(reply);
+        }
+        else {
+            const reply = context.issue(
+                {body: `🟢 <b>Milestone has been added, Hash: ${milestones.hash}</b>`}
+            );
+            await context.octokit.issues.createComment(reply);
+        }
     }
     catch(err){
         console.error(`Error: huntCommand - ${err}`)

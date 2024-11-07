@@ -1,13 +1,15 @@
 import { ethers } from 'ethers';
 import { MANAGER_ADDRESS, DEV_PROVIDER_PATH, DEV_PRIVATE_KEY } from './config/config.js';
-import { MANAGER_ABI } from './config/managerAbi.js';
 
 const provider = new ethers.JsonRpcProvider(DEV_PROVIDER_PATH);
 const wallet = new ethers.Wallet(DEV_PRIVATE_KEY, provider);
 
+import { getManagerContract } from './get-contracts.js';
+
+
 export async function fundBounty(bountyId, donorWallet) {
     try {
-        const managerContract = new ethers.Contract(MANAGER_ADDRESS, MANAGER_ABI, wallet);
+        const managerContract = await getManagerContract();
         const bountyInfo = await managerContract.getBountyInfo(bountyId);
 
         console.log(":::::::: fundBounty");
@@ -54,8 +56,10 @@ export async function fundBounty(bountyId, donorWallet) {
         // Wait for the transaction to be confirmed
         await fundBountyTx.wait();
         console.log("Funding complete");
+
+        return await managerContract.getBountyInfo(bountyId);
+
     } catch (error) {
-        console.error("Transaction failed:", error);
-        throw new Error("Failed to register bounty.");
+        return {error: error};
     }
 }
