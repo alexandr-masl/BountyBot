@@ -48,6 +48,10 @@ This setup creates an automated, efficient workflow for managing bounties on Git
     When ready to submit their work, the hunter opens a pull request (PR) and links it to the relevant issue in the PR body. The repository admin reviews and, if approved, merges the PR. 
     The bot then detects the merged PR, identifies the associated on-chain strategy, and distributes the bounty to the recipient's wallet.
 
+- **`issue closed`** 
+    If the issue is closed manually or closed by a PR without a registered recipient, the bot will notify donors in the issue comments that an active on-chain strategy exists. 
+    It will provide instructions on how they can revoke their contributions and retrieve their funds.
+
 
 ## Setup
 
