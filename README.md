@@ -8,7 +8,9 @@ The bot monitors GitHub repository issues, listening for specific commands and e
 
 ## Process Overview:
 
-- **Issue Creation:** Any user can create a new issue in the GitHub repository. Once created, the repository Admin can register this issue as an on-chain bounty by commenting `/register` in the issue, along with the reward amount and token.
+- **Issue Creation:** Any user can create a new issue in the GitHub repository. 
+
+- **Bounty Registration** Once created, the repository Admin can register this issue as an on-chain bounty by commenting `/register` in the issue, along with the reward amount and token.
 
 - **Funding the Bounty:** After registration, any user can fund the bounty by sending the `/fund` command in the issue comments along with their wallet address. The bot then moves funds from the contributor's wallet to its own and subsequently transfers them to the on-chain strategy pool.
 
@@ -21,8 +23,16 @@ This setup creates an automated, efficient workflow for managing bounties on Git
 
 ## Commands Overview:
 
+- **`/register`**
+
+- **`/fund`**
+
+- **`/hunt`**
 
 
+## Events Overview:
+
+- **`pull request`**
 
 
 ## Setup
