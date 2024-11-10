@@ -1,21 +1,15 @@
-import { ethers } from 'ethers';
-import { MANAGER_ADDRESS, DEV_PROVIDER_PATH, DEV_PRIVATE_KEY } from './config/config.js';
-import { MANAGER_ABI } from './config/manager-abi.js';
-import { STRATEGY_ABI } from './config/strategy-abi.js';
-
-const provider = new ethers.JsonRpcProvider(DEV_PROVIDER_PATH);
-const managerWallet = new ethers.Wallet(DEV_PRIVATE_KEY, provider);
+import { getManagerContract, getStrategyContract } from './get-contracts.js';
 
 export async function removeRecipient(bountyId) {
   try{  
-    const managerContract = new ethers.Contract(MANAGER_ADDRESS, MANAGER_ABI, managerWallet);
+    const managerContract = await getManagerContract();
     const bountyInfo = await managerContract.getBountyInfo(bountyId);
 
     console.log(":::::::: removeRecipient");
     console.log(":::::::: Bounty Info");
     console.log(bountyInfo);
 
-    const bountyStrategy = new ethers.Contract(bountyInfo[7], STRATEGY_ABI, managerWallet);
+    const bountyStrategy = await getStrategyContract(bountyId);
     const strategyInfo = await bountyStrategy.getBountyStrategyInfo();
 
     console.log(":::::::: Strategy Info");
@@ -28,13 +22,9 @@ export async function removeRecipient(bountyId) {
     const removeRecipientTxResult = await removeRecipient.wait();
     console.log("---- Remove Recipient Tx Result");
     console.log(removeRecipientTxResult);
-
-    const updatedStrategyInfo = await bountyStrategy.getBountyStrategyInfo();
-    console.log(":::::::: Updated Strategy Info");
-    console.log(updatedStrategyInfo);
   }
   catch(error){
-    console.log("error !!! submitMilestones")
+    console.log("error !!! removeRecipient")
     console.log(error)
     return {error: error};
   }

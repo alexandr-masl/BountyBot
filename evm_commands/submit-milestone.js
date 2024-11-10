@@ -1,24 +1,12 @@
 import { ethers } from 'ethers';
-import { MANAGER_ADDRESS, DEV_PROVIDER_PATH, DEV_PRIVATE_KEY } from './config/config.js';
-import { MANAGER_ABI } from './config/manager-abi.js';
-import { STRATEGY_ABI } from './config/strategy-abi.js';
-import { ERC20_ABI } from './config/erc20-abi.js';
-
-const provider = new ethers.JsonRpcProvider(DEV_PROVIDER_PATH);
-const managerWallet = new ethers.Wallet(DEV_PRIVATE_KEY, provider);
-
+import { getManagerContract, getStrategyContract, getTokenContract } from './get-contracts.js';
 
 export async function submitMilestones(bountyId, pullRequestPath) {
   try{  
 
-    const managerContract = new ethers.Contract(MANAGER_ADDRESS, MANAGER_ABI, managerWallet);
+    const managerContract = await getManagerContract();
     const bountyInfo = await managerContract.getBountyInfo(bountyId);
-
-    console.log(":::::::: submitMilestones");
-    console.log(":::::::: Bounty Info");
-    console.log(bountyInfo);
-
-    const bountyStrategy = new ethers.Contract(bountyInfo[7], STRATEGY_ABI, managerWallet);
+    const bountyStrategy = await getStrategyContract(bountyId);
 
     const strategyInfo = await bountyStrategy.getBountyStrategyInfo();
     console.log(":::::::: Strategy Info");
@@ -28,7 +16,7 @@ export async function submitMilestones(bountyId, pullRequestPath) {
     const bountyDonors = bountyInfo[3];
     const tokenAddress = bountyInfo[0];
 
-    const tokenContract = new ethers.Contract(tokenAddress, ERC20_ABI, provider);
+    const tokenContract = await getTokenContract(tokenAddress);
 
     const hunterBalance = await tokenContract.balanceOf(hunterAddress);
     console.log(":::::::: Hunter Wallet Balance");
@@ -51,8 +39,7 @@ export async function submitMilestones(bountyId, pullRequestPath) {
       console.log(updatedHunterBalance.toString());
     }
     else {
-
-      return {error: ""}
+      return {error: "ERROR: Invalid Hunter Address"};
     }
   }
   catch(error){
@@ -61,5 +48,3 @@ export async function submitMilestones(bountyId, pullRequestPath) {
     return {error: error};
   }
 }
-
-// offerMilestones("0x3e4ff1a32318a7201199bb9644b3d4ac15c6a468b436c8456d812687b9b8e532");

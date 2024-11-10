@@ -1,4 +1,4 @@
-import { getBountyId } from '../db/dataBase.js'
+import { getBountyId } from '../db/data-base.js'
 import { removeRecipient } from '../evm_commands/remove-recipient.js';
 
 export const manageUnassigned = async (context) => {

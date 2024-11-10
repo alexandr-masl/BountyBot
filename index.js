@@ -1,10 +1,11 @@
-import { manageComment } from './handlers/commentManager.js';
-import { managePullRequest } from './handlers/pullRequestManager.js';
+import { manageComment } from './handlers/comment.js';
+import { managePullRequest } from './handlers/pull-request.js';
 import { manageUnassigned } from './handlers/unassigned.js';
+import { manageIssueClosed } from './handlers/issue-closed.js';
 import { mongoose } from 'mongoose';
 
 /**
- * This is the main entrypoint to your Probot app
+ * The main entrypoint to the Probot app
  * @param {import('probot').Probot} app
  */
 
@@ -30,7 +31,11 @@ export default (app) => {
   app.on("issues.unassigned", async (context) => {
     await manageUnassigned(context);
   });
-  
+
+  app.on("issues.closed", async (context) => {
+    await manageIssueClosed(context);
+  });
+
 
   mongoose.connect('mongodb://localhost:27017/GitHub-ProBot')
   .then(() => console.log("Connected to MongoDB"))

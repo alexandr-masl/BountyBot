@@ -4,7 +4,7 @@ import { DEV_PROVIDER_PATH, DEV_PRIVATE_KEY, DONOR_PRIVATE_KEY } from './config/
 const provider = new ethers.JsonRpcProvider(DEV_PROVIDER_PATH);
 const wallet = new ethers.Wallet(DEV_PRIVATE_KEY, provider);
 const donorWallet = new ethers.Wallet(DONOR_PRIVATE_KEY, provider); // Create donor wallet from private key
-const MOCK_TOKEN = "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853"; // Mock token address
+const MOCK_TOKEN = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"; // Mock token address
 
 export async function approveToken(walletFrom, walletTo, amountIn) {
     try {

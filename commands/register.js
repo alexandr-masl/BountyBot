@@ -1,6 +1,6 @@
-import { isAdminUser } from '../handlers/adminManager.js';
+import { isAdminUser } from '../handlers/admin-check.js';
 import { registerBounty } from '../evm_commands/register-bounty.js';
-import { getBountyId, setBountyId } from '../db/dataBase.js'
+import { getBountyId, setBountyId } from '../db/data-base.js'
 import { ethers } from 'ethers';
 
 export const registerCommand = async (context, payload) => {

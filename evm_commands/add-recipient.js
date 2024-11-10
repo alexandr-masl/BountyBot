@@ -1,21 +1,15 @@
-import { ethers } from 'ethers';
-import { MANAGER_ADDRESS, DEV_PROVIDER_PATH, DEV_PRIVATE_KEY } from './config/config.js';
-import { MANAGER_ABI } from './config/manager-abi.js';
-import { STRATEGY_ABI } from './config/strategy-abi.js';
-
-const provider = new ethers.JsonRpcProvider(DEV_PROVIDER_PATH);
-const managerWallet = new ethers.Wallet(DEV_PRIVATE_KEY, provider);
+import { getManagerContract, getStrategyContract } from './get-contracts.js';
 
 export async function addRecipient(bountyId, recipientWallet) {
     try{  
-      const managerContract = new ethers.Contract(MANAGER_ADDRESS, MANAGER_ABI, managerWallet);
+      const managerContract = await getManagerContract();
       const bountyInfo = await managerContract.getBountyInfo(bountyId);
   
-      console.log(":::::::: offerMilestones");
+      console.log(":::::::: addRecipient");
       console.log(":::::::: Bounty Info");
       console.log(bountyInfo);
   
-      const bountyStrategy = new ethers.Contract(bountyInfo[7], STRATEGY_ABI, managerWallet);
+      const bountyStrategy = await getStrategyContract(bountyId);
 
       const addRecipient = await bountyStrategy.reviewRecipient(recipientWallet, 2, { gasLimit: 3000000});
 
@@ -31,7 +25,7 @@ export async function addRecipient(bountyId, recipientWallet) {
       return strategyInfo;
     }
     catch(error){
-      console.log("error !!! submitMilestones")
+      console.log("error !!! addRecipient")
       console.log(error)
       return {error: error};
     }

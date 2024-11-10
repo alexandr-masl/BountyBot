@@ -1,6 +1,6 @@
-import {assignHunter} from "../handlers/hunterManager.js"
-import {isValidAddress} from "../handlers/walletChecker.js"
-import {getBountyId} from '../db/dataBase.js'
+import {assignHunter} from "../handlers/hunter.js"
+import {isValidAddress} from "../handlers/wallet-checker.js"
+import {getBountyId} from '../db/data-base.js'
 import { addRecipient } from "../evm_commands/add-recipient.js"
 
 export const huntCommand = async (context, payload) => {

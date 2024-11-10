@@ -1,42 +1,29 @@
 import { ethers } from 'ethers';
-import { MANAGER_ADDRESS, DEV_PROVIDER_PATH, DEV_PRIVATE_KEY } from './config/config.js';
-import { MANAGER_ABI } from './config/manager-abi.js';
-import { STRATEGY_ABI } from './config/strategy-abi.js';
-
-const provider = new ethers.JsonRpcProvider(DEV_PROVIDER_PATH);
-const managerWallet = new ethers.Wallet(DEV_PRIVATE_KEY, provider);
+import { getManagerContract, getStrategyContract } from './get-contracts.js';
 
 export async function offerMilestones(bountyId) {
   try{   
-    const managerContract = new ethers.Contract(MANAGER_ADDRESS, MANAGER_ABI, managerWallet);
+    const managerContract = await getManagerContract();
     const bountyInfo = await managerContract.getBountyInfo(bountyId);
-
-    console.log(":::::::: offerMilestones");
-    console.log(":::::::: Bounty Info");
-    console.log(bountyInfo);
-
-    const bountyStrategy = new ethers.Contract(bountyInfo[7], STRATEGY_ABI, managerWallet);
+    const bountyStrategy = await getStrategyContract(bountyId);
 
     const milestonesOBJ = [
         {
           amountPercentage: ethers.parseUnits("1", "ether"), 
           metadata: bountyInfo[8],
           milestoneStatus: 0,
-          description: "i will do my best"
+          description: bountyId
         }
     ];
 
-    const milestones = await bountyStrategy.offerMilestones(milestonesOBJ, { gasLimit: 3000000});
-
-    const setMilestonesTxResult = await milestones.wait();
+    const offerMilestones = await bountyStrategy.offerMilestones(milestonesOBJ, { gasLimit: 3000000});
+    const offerMilestonesTxResult = await offerMilestones.wait();
     console.log("---- Offer Milestones Tx Result");
-    console.log(setMilestonesTxResult);
+    console.log(offerMilestonesTxResult);
 
-    return setMilestonesTxResult;
+    return offerMilestonesTxResult;
   }
   catch(error){
     return {error: error};
   }
 }
-
-// offerMilestones("0x3e4ff1a32318a7201199bb9644b3d4ac15c6a468b436c8456d812687b9b8e532");

@@ -1,5 +1,5 @@
-import { checkCommand } from './commandChecker.js';
-import { manageCommand } from './commandManager.js';
+import { checkCommand } from './command-checker.js';
+import { manageCommand } from './command.js';
 
 export const manageComment = async (context) => {
     try {

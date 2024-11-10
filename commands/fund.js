@@ -1,4 +1,4 @@
-import { getBountyId } from '../db/dataBase.js'
+import { getBountyId } from '../db/data-base.js'
 import { fundBounty } from '../evm_commands/fund-bounty.js'
 import { offerMilestones} from '../evm_commands/offer-milestones.js';
 
