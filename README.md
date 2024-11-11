@@ -4,7 +4,7 @@
 
 The bot monitors GitHub repository issues, listening for specific commands and executing them to handle bounty registration, funding, assigning bounty hunters, and distributing rewards once a pull request (PR) is merged and marked as complete.
 
-This bot is designed to utilize an on-chain pool funding and distribution strategy, implemented through a set of smart contracts. Since this bot is only one approach to using the on-chain strategy, we recommend exploring [the Strategy repository](https://github.com/alexandr-masl/evm_bounty) to gain a deeper understanding of the bot's actions and the overall project concept. 
+This bot is only one approach to using the [BountyStrategy](https://github.com/alexandr-masl/evm_bounty) we highly recommend exploring [strategy repository](https://github.com/alexandr-masl/evm_bounty) to gain a deeper understanding of the bot's actions and the overall project concept. 
 
 ## Process Overview:
 
