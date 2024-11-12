@@ -28,7 +28,7 @@ export const managePullRequest = async (context) => {
 
               if (bountyData.hunter){
                 const submittedMilestoneData = await submitMilestones(bountyId, pr.html_url);
-                body += `\n\n🟢 Milestone has been submitted`;
+                body += `\n\n🟢 The milestone has been submitted and funds have been distributed to the hunter's wallet.`;
               }
             }
           }

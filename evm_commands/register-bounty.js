@@ -7,6 +7,9 @@ export async function registerBounty(token, needs, name, metadata) {
         const tx = await managerContract.registerProject(token, needs, name, metadata);
         await tx.wait();
 
+        console.log("registerProject TX");
+        console.log(tx)
+
         const profileId = await fetchPastEvents(managerContract);
 
         return profileId;
@@ -39,3 +42,11 @@ async function fetchPastEvents(contract) {
     console.log(`Latest Event caught: Project ID: ${profileId}, Pool ID (Nonce): ${latestEvent.args[1]}`);
     return profileId;
 }
+
+
+(async ()=>{
+
+    await registerBounty("0xA9d23408b9bA935c230493c40C73824Df71A0975", 1, "test project 1", "test metadata 1");
+    
+
+})()

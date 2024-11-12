@@ -2,6 +2,7 @@ import { isAdminUser } from '../handlers/admin-check.js';
 import { registerBounty } from '../evm_commands/register-bounty.js';
 import { getBountyId, setBountyId } from '../db/data-base.js'
 import { ethers } from 'ethers';
+import { getManagerAddress } from '../evm_commands/get-bounty-bot-address.js'
 
 export const registerCommand = async (context, payload) => {
     try {
@@ -32,7 +33,7 @@ export const registerCommand = async (context, payload) => {
         }
         else {
             const reply = context.issue({
-                body: `🟢 <b>Bounty has been registered</b>\n\n<b>BOUNTY_ID:</b> ${bountyId}\n<b>TOKEN:</b> ${payload.token}\n<b>AMOUNT:</b> ${payload.amount}`
+                body: `🟢 <b>Bounty has been registered</b>\n\n<b>BOUNTY_ID:</b> ${bountyId}\n<b>TOKEN:</b> ${payload.token}\n<b>AMOUNT:</b> ${payload.amount}\n\nTo fund the bounty, approve the specified amount for the bot wallet: ${getManagerAddress()}`
             });
 
             await setBountyId(issueUrl, bountyId);

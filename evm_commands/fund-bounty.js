@@ -1,7 +1,10 @@
 import { ethers } from 'ethers';
-import { MANAGER_ADDRESS, DEV_PROVIDER_PATH, DEV_PRIVATE_KEY } from './config/config.js';
-const provider = new ethers.JsonRpcProvider(DEV_PROVIDER_PATH);
-const wallet = new ethers.Wallet(DEV_PRIVATE_KEY, provider);
+import { MANAGER_ADDRESS, TAIKO_PROVIDER_PATH } from './config/config.js';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const provider = new ethers.JsonRpcProvider(TAIKO_PROVIDER_PATH);
+const wallet = new ethers.Wallet(process.env.BOT_PRIVATE_KEY, provider);
 
 import { getManagerContract, getTokenContract } from './get-contracts.js';
 
@@ -18,12 +21,12 @@ export async function fundBounty(bountyId, donorWallet) {
         const tokenContract = await getTokenContract(bountyInfo[0]);
 
         // // // Transfer tokens from donorWallet to wallet
-        console.log("Transferring tokens from donorWallet to wallet...");
-        const transferTx = await tokenContract.transferFrom(donorWallet, wallet.address, bountyInfo[4]);
+        // console.log("Transferring tokens from donorWallet to wallet...");
+        // const transferTx = await tokenContract.transferFrom(donorWallet, wallet.address, bountyInfo[4]);
 
         // // Wait for the transaction to be confirmed
-        await transferTx.wait();
-        console.log("Transfer complete");
+        // await transferTx.wait();
+        // console.log("Transfer complete");
 
         console.log("Approving Manager Contract to spend tokens on behalf of botWallet...");
         const approveTx = await tokenContract.approve(MANAGER_ADDRESS, bountyInfo[4]);
@@ -31,7 +34,7 @@ export async function fundBounty(bountyId, donorWallet) {
         console.log("Approval complete. Manager Contract can now spend on behalf of botWallet.");
 
         console.log("Funding Bounty...");
-        const fundBountyTx = await managerContract.supplyProject(bountyId, bountyInfo[4], donorWallet);
+        const fundBountyTx = await managerContract.supplyProject(bountyId, bountyInfo[4], donorWallet, { gasLimit: 3000000});
 
         // Wait for the transaction to be confirmed
         await fundBountyTx.wait();
@@ -40,6 +43,13 @@ export async function fundBounty(bountyId, donorWallet) {
         return await managerContract.getBountyInfo(bountyId);
 
     } catch (error) {
+        console.log(error)
         return {error: error};
     }
 }
+
+(async ()=>{
+
+    await fundBounty("0x93a3989161aa373776ffc18f6fc47b0574582820893aa0d4e70ef84a56bbf49c", "0x01Ae8d6d0F137CF946e354eA707B698E8CaE6485")
+    
+})()

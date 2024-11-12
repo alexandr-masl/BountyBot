@@ -1,11 +1,13 @@
 import { ethers } from 'ethers';
-import { MANAGER_ADDRESS, DEV_PROVIDER_PATH, DEV_PRIVATE_KEY } from './config/config.js';
+import { MANAGER_ADDRESS, TAIKO_PROVIDER_PATH } from './config/config.js';
 import { MANAGER_ABI } from './config/manager-abi.js';
 import { STRATEGY_ABI } from './config/strategy-abi.js';
 import { ERC20_ABI } from './config/erc20-abi.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const provider = new ethers.JsonRpcProvider(DEV_PROVIDER_PATH);
-const managerWallet = new ethers.Wallet(DEV_PRIVATE_KEY, provider);
+const provider = new ethers.JsonRpcProvider(TAIKO_PROVIDER_PATH);
+const managerWallet = new ethers.Wallet(process.env.BOT_PRIVATE_KEY, provider);
 
 export async function getManagerContract(){
     try {
