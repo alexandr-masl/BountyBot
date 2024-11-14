@@ -14,7 +14,7 @@ export const manageCommand = async (context, command) => {
             fundCommand(context, command);
             break;
         default:
-            console.log("Unknown command:", command.command);
+            console.log("ERROR: manageCommand | Unknown command:", command.command);
             break;
     }
 }

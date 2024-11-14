@@ -22,10 +22,6 @@ export async function getBountyById(bountyId) {
         const managerContract = await getManagerContract();
         const bountyInfo = await managerContract.getBountyInfo(bountyId);
 
-        console.log(":::::::: getBountyById");
-        console.log(":::::::: Bounty Info");
-        console.log(bountyInfo);
-
         if (!bountyInfo.length){
             return {error: "Invalid Bounty Info"};
         }
@@ -37,12 +33,8 @@ export async function getBountyById(bountyId) {
 
         if (strategyAddress){
             bountyData.strategyAddress = strategyAddress;
-
             const bountyStrategy = new ethers.Contract(strategyAddress, STRATEGY_ABI, managerWallet);
             const strategyInfo = await bountyStrategy.getBountyStrategyInfo();
-            console.log(":::::::: Strategy Info");
-            console.log(strategyInfo);
-
             const strategyState = strategyInfo[0];
             const hunterAddress = strategyInfo[4];
 

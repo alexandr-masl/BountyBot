@@ -8,7 +8,6 @@ export const registerCommand = async (context, payload) => {
     try {
 
         const isAdmin = await isAdminUser(context);
-        // console.log("------- isAdmin:", isAdmin);
 
         if (!isAdmin){
             const reply = context.issue({body: "Error: UnAuthorized"});

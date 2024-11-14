@@ -52,13 +52,12 @@ export const setBountyId = async (key, bountyId) => {
         bountyTable = new BountyIdTable({ data: {} });
       }
       
-      
       // Set or update the bounty ID for the given key
       bountyTable.data.set(sanitizeKey(key), bountyId);
   
       // Save the changes to the database
       await bountyTable.save();
-      console.log(`Bounty ID set for key: ${key}`);
+      // console.log(`Bounty ID set for key: ${key}`);
     } catch (error) {
       console.error("Error setting bounty ID:", error);
     }

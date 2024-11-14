@@ -15,8 +15,6 @@ export const managePullRequest = async (context) => {
         if (match) {
           let body = `This issue was resolved by PR #${pr.number}`;
           const issueNumber = match[1];
-          console.log(`Detected issue #${issueNumber} linked in PR body.`);
-
           const issueUrl = match[0];
           const bountyId = await getBountyId(issueUrl);
 
@@ -27,7 +25,7 @@ export const managePullRequest = async (context) => {
             if (bountyData.strategyState){
 
               if (bountyData.hunter){
-                const submittedMilestoneData = await submitMilestones(bountyId, pr.html_url);
+                await submitMilestones(bountyId, pr.html_url);
                 body += `\n\n🟢 The milestone has been submitted and funds have been distributed to the hunter's wallet.`;
               }
             }

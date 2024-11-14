@@ -5,10 +5,6 @@ import { addRecipient } from "../evm_commands/add-recipient.js"
 
 export const huntCommand = async (context, payload) => {
     try {
-
-        console.log("------- Executing /hunt command...");
-        console.log(payload)
-
         if (!isValidAddress(payload.wallet)){
             const reply = context.issue({body: "Error: invalid wallet address"});
             return context.octokit.issues.createComment(reply);
@@ -23,7 +19,6 @@ export const huntCommand = async (context, payload) => {
 
         const issueUrl = context.payload.issue.html_url;
         const bountyId = await getBountyId(issueUrl);
-        console.log("::::::::: Bounty ID:", bountyId)
 
         if (!bountyId){
             const reply = context.issue({body: `🔴 Error: Undefined Bounty ID..`});

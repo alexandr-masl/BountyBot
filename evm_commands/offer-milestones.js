@@ -18,8 +18,6 @@ export async function offerMilestones(bountyId) {
 
     const offerMilestones = await bountyStrategy.offerMilestones(milestonesOBJ, { gasLimit: 3000000});
     const offerMilestonesTxResult = await offerMilestones.wait();
-    console.log("---- Offer Milestones Tx Result");
-    console.log(offerMilestonesTxResult);
 
     return offerMilestonesTxResult;
   }

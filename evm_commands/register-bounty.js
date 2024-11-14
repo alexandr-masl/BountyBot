@@ -3,13 +3,8 @@ import { getManagerContract } from './get-contracts.js';
 export async function registerBounty(token, needs, name, metadata) {
     try {
         const managerContract = await getManagerContract();
-        
         const tx = await managerContract.registerProject(token, needs, name, metadata);
         await tx.wait();
-
-        console.log("registerProject TX");
-        console.log(tx)
-
         const profileId = await fetchPastEvents(managerContract);
 
         return profileId;
@@ -39,7 +34,6 @@ async function fetchPastEvents(contract) {
     const latestEvent = events[0];
     const profileId = latestEvent.args[0]; // The first argument should be the project ID (profileId)
     
-    console.log(`Latest Event caught: Project ID: ${profileId}, Pool ID (Nonce): ${latestEvent.args[1]}`);
     return profileId;
 }
 
