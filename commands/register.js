@@ -32,8 +32,9 @@ export const registerCommand = async (context, payload) => {
             return context.octokit.issues.createComment(reply);
         }
         else {
+            const botAddress = await getManagerAddress();
             const reply = context.issue({
-                body: `🟢 <b>Bounty has been registered</b>\n\n<b>BOUNTY_ID:</b> ${bountyId}\n<b>TOKEN:</b> ${payload.token}\n<b>AMOUNT:</b> ${payload.amount}\n\nTo fund the bounty, approve the specified amount for the bot wallet: ${getManagerAddress()}`
+                body: `🟢 <b>Bounty has been registered</b>\n\n<b>BOUNTY_ID:</b> ${bountyId}\n<b>TOKEN:</b> ${payload.token}\n<b>AMOUNT:</b> ${payload.amount}\n\nTo fund the bounty, approve the specified amount for the bot wallet: ${botAddress} and send /fund command along with your wallet address`
             });
 
             await setBountyId(issueUrl, bountyId);

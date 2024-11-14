@@ -1,10 +1,10 @@
 import { ethers } from 'ethers';
-import { MANAGER_ADDRESS, TAIKO_PROVIDER_PATH } from './config/config.js';
+import { MANAGER_ADDRESS, TAIKO_PROVIDER_PATH, DEV_PROVIDER_PATH, DEV_BOT_PRIVATE_KEY } from './config/config.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const provider = new ethers.JsonRpcProvider(TAIKO_PROVIDER_PATH);
-const wallet = new ethers.Wallet(process.env.BOT_PRIVATE_KEY, provider);
+const provider = new ethers.JsonRpcProvider(DEV_PROVIDER_PATH);
+const wallet = new ethers.Wallet(DEV_BOT_PRIVATE_KEY, provider);
 
 import { getManagerContract, getTokenContract } from './get-contracts.js';
 
@@ -20,13 +20,13 @@ export async function fundBounty(bountyId, donorWallet) {
         // Set up the token contract with a minimal ERC20 ABI
         const tokenContract = await getTokenContract(bountyInfo[0]);
 
-        // // // Transfer tokens from donorWallet to wallet
-        // console.log("Transferring tokens from donorWallet to wallet...");
-        // const transferTx = await tokenContract.transferFrom(donorWallet, wallet.address, bountyInfo[4]);
+        // Transfer tokens from donorWallet to wallet
+        console.log("Transferring tokens from donorWallet to wallet...");
+        const transferTx = await tokenContract.transferFrom(donorWallet, wallet.address, bountyInfo[4]);
 
-        // // Wait for the transaction to be confirmed
-        // await transferTx.wait();
-        // console.log("Transfer complete");
+        // Wait for the transaction to be confirmed
+        await transferTx.wait();
+        console.log("Transfer complete");
 
         console.log("Approving Manager Contract to spend tokens on behalf of botWallet...");
         const approveTx = await tokenContract.approve(MANAGER_ADDRESS, bountyInfo[4]);
@@ -48,8 +48,8 @@ export async function fundBounty(bountyId, donorWallet) {
     }
 }
 
-(async ()=>{
+// (async ()=>{
 
-    await fundBounty("0x93a3989161aa373776ffc18f6fc47b0574582820893aa0d4e70ef84a56bbf49c", "0x01Ae8d6d0F137CF946e354eA707B698E8CaE6485")
+//     await fundBounty("0x9d6335283bcc34f0f1716ff0f7a8814a60ee0647be50196c10cf9ca3dfd40e62", "0x01Ae8d6d0F137CF946e354eA707B698E8CaE6485")
     
-})()
+// })()

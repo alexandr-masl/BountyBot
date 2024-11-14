@@ -1,12 +1,12 @@
 import { ethers } from 'ethers';
-import { TAIKO_PROVIDER_PATH } from './config/config.js';
+import { TAIKO_PROVIDER_PATH, DEV_PROVIDER_PATH, DEV_BOT_PRIVATE_KEY } from './config/config.js';
 import { getManagerContract } from './get-contracts.js';
 import { STRATEGY_ABI } from './config/strategy-abi.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const provider = new ethers.JsonRpcProvider(TAIKO_PROVIDER_PATH);
-const managerWallet = new ethers.Wallet(process.env.BOT_PRIVATE_KEY, provider);
+const provider = new ethers.JsonRpcProvider(DEV_PROVIDER_PATH);
+const managerWallet = new ethers.Wallet(DEV_BOT_PRIVATE_KEY, provider);
 
 export async function getBountyById(bountyId) {
     try {

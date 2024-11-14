@@ -44,9 +44,9 @@ async function fetchPastEvents(contract) {
 }
 
 
-(async ()=>{
+// (async ()=>{
 
-    await registerBounty("0xA9d23408b9bA935c230493c40C73824Df71A0975", 1, "test project 1", "test metadata 1");
+//     await registerBounty("0x10f14F3bD798544027fFe32f85fA0a5679333296", 1, "test project 1", "test metadata 1");
     
 
-})()
+// })()

@@ -12,6 +12,9 @@ export const manageUnassigned = async (context) => {
 
         if (bountyId){       
             const removedRecipient = await removeRecipient(bountyId);
+
+            const reply = context.issue({body: `🟡 Hunter: ${removedRecipient} has been removed from the Bounty`});
+            return context.octokit.issues.createComment(reply);
         }
     }
     catch(error){

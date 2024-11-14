@@ -1,10 +1,10 @@
 import { ethers } from 'ethers';
-import { TAIKO_PROVIDER_PATH, DEV_DONOR_PRIVATE_KEY } from './config/config.js';
+import { TAIKO_PROVIDER_PATH, DEV_PROVIDER_PATH, DEV_DONOR_PRIVATE_KEY, DEV_BOT_PRIVATE_KEY } from './config/config.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const provider = new ethers.JsonRpcProvider(TAIKO_PROVIDER_PATH);
-const wallet = new ethers.Wallet(process.env.BOT_PRIVATE_KEY, provider);
+const provider = new ethers.JsonRpcProvider(DEV_PROVIDER_PATH);
+const wallet = new ethers.Wallet(DEV_BOT_PRIVATE_KEY, provider);
 const donorWallet = new ethers.Wallet(DEV_DONOR_PRIVATE_KEY, provider); // Create donor wallet from private key
 const MOCK_TOKEN = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"; // Mock token address
 
@@ -51,9 +51,9 @@ export async function sendToken(walletFrom, walletTo, amountIn) {
 
 (async ()=>{
 
-    sendToken(wallet, "0x227B585084032057fEdA0346975C125b9F540320", "1")
+    // sendToken(wallet, "0x227B585084032057fEdA0346975C125b9F540320", "1")
 
-    // approveToken(donorWallet, wallet.address, '1');    
+    approveToken(donorWallet, wallet.address, '10');    
 })()
 
 

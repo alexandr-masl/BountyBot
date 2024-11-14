@@ -22,6 +22,8 @@ export async function removeRecipient(bountyId) {
     const removeRecipientTxResult = await removeRecipient.wait();
     console.log("---- Remove Recipient Tx Result");
     console.log(removeRecipientTxResult);
+
+    return strategyInfo[4];
   }
   catch(error){
     console.log("error !!! removeRecipient")
